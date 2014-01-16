@@ -31,14 +31,8 @@ public final class RouteDatabase {
   private final Set<Route> failedRoutes = new LinkedHashSet<Route>();
 
   /** Records a failure connecting to {@code failedRoute}. */
-  public synchronized void failed(Route failedRoute, IOException failure) {
+  public synchronized void failed(Route failedRoute) {
     failedRoutes.add(failedRoute);
-
-    if (!(failure instanceof SSLHandshakeException)) {
-      // If the problem was not related to SSL then it will also fail with
-      // a different TLS mode therefore we can be proactive about it.
-      failedRoutes.add(failedRoute.flipTlsMode());
-    }
   }
 
   /** Records success connecting to {@code failedRoute}. */
